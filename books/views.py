@@ -9,23 +9,26 @@ from rest_framework import (
 # from rest_framework.mixins import ListModelMixin, CreateModelMixin
 from .serializers import BooksSerializer, CommentSerializer
 from .models import Book, Comment
+from .permissions import IsAdminUserOrReadOnly
 # Create your views here.
 
 
 class BookListCreateAPIView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BooksSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsAdminUserOrReadOnly]
 
 
 class BookDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BooksSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
 
 
 class CommentCreateAPIView(generics.CreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
 
     def perform_create(self, serializer):
         pk = self.kwargs.get("pk")
@@ -36,6 +39,7 @@ class CommentCreateAPIView(generics.CreateAPIView):
 class CommentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
 
 
 
