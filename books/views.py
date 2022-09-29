@@ -28,6 +28,16 @@ class CommentCreateAPIView(generics.CreateAPIView):
         book = get_object_or_404(Book, pk=pk)
         serializer.save(book=book)
 
+
+class CommentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+
+
+
+    
+
 # class BookListCreateAPIView(ListModelMixin, CreateModelMixin, GenericAPIView):
 #     queryset = Book.objects.all()
 #     serializer_class = BooksSerializer
