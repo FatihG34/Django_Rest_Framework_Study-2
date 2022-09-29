@@ -24,7 +24,7 @@ class Comment(models.Model):
     comments_owner = models.CharField(max_length=255)
     comment = models.TextField(blank=True, null=True)
 
-    createion_date = models.DateTimeField(auto_now_add=False)
+    creation_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
     rating = models.PositiveIntegerField(

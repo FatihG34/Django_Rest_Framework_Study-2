@@ -6,7 +6,8 @@ from .models import Book, Comment
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = "__all__"
+        # fields = "__all__"
+        exclude = ('book',)
 
 
 class BooksSerializer(serializers.ModelSerializer):
@@ -14,5 +15,5 @@ class BooksSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ["id", "name", "author", "comments", "definition",
-                  "createion_date", "updated_date", "published_date"]
+        fields = "__all__"
+        # fields = ["id", "name", "author", "comments", "definition","createion_date", "updated_date", "published_date"]
