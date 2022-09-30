@@ -4,6 +4,7 @@ from .models import Book, Comment
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    comments_owner = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Comment
         # fields = "__all__"

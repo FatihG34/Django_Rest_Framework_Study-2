@@ -6,10 +6,12 @@ from rest_framework import (
     generics,
     permissions,
     )
+from rest_framework.exceptions import ValidationError
 # from rest_framework.mixins import ListModelMixin, CreateModelMixin
 from .serializers import BooksSerializer, CommentSerializer
 from .models import Book, Comment
-from .permissions import IsAdminUserOrReadOnly
+from .permissions import IsAdminUserOrReadOnly, IsCommentOwnerOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 # Create your views here.
 
 
@@ -28,18 +30,22 @@ class BookDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class CommentCreateAPIView(generics.CreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAdminUserOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         pk = self.kwargs.get("pk")
         book = get_object_or_404(Book, pk=pk)
-        serializer.save(book=book)
+        user = self.request.user
+        comments = Comment.objects.filter(book=book,comments_owner=user)
+        if comments.exists():
+            raise ValidationError("You can not add another comment, for this book !")
+        serializer.save(book=book, comments_owner=user)
 
 
 class CommentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAdminUserOrReadOnly]
+    permission_classes = [IsCommentOwnerOrReadOnly]
 
 
 
