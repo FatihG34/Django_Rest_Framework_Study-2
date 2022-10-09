@@ -9,7 +9,6 @@ django.setup()
 
 
 def user_set():
-
     fake = Faker(['en_US'])
 
     first_name = fake.first_name()
@@ -18,10 +17,11 @@ def user_set():
     email = f"{user_name}@{fake.domain_name()}"
 
     print(first_name, email)
-    user_check = User.objects.filter(user=user_name)
+
+    user_check = User.objects.filter(username=user_name)
     while user_check.exists():
-        user_name = user_name + random.randrange(1, 99)
-        user_check = User.objects.filter(user=user_name)
+        user_name = user_name + str(random.randrange(1, 999))
+        user_check = User.objects.filter(username=user_name)
 
     user = User(
         username=user_name,
